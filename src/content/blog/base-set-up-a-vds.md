@@ -2,7 +2,7 @@
 title: "Базовая настройка VDS"
 description: "В этой статье вы узнаете как базово настроить VDS"
 pubDate: "2024-02-01"
-heroImage: "blog-placeholder-1.png"
+heroImage: "blog-placeholder-2.jpg"
 ---
 
 # Начало
