@@ -3,8 +3,7 @@ import type { SocialObject } from "./type";
 export const BLOG = {
   title: "Mihandr Blog",
   description: "Блог о веб-разработке",
-  url: "https://mihandr.dev",
-  website: "https://mihandr.dev",
+  website: "https://blog.mihandr.dev",
   author: "Mihandr",
   profile: "https://mihandr.dev",
 };
