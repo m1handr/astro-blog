@@ -1,0 +1,52 @@
+---
+import { Image } from "astro:assets";
+import { type CollectionEntry, getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: post,
+  }));
+}
+type Props = CollectionEntry<"blog">;
+
+const post = Astro.props;
+const { Content } = await render(post);
+---
+
+<Layout
+  title={post.data.title}
+  description={post.data.description}
+  ogImage={post.data.heroImage}
+  pubDatetime={post.data.pubDate}
+>
+  <div id="scroll-progress" class="bg-indigo-500 h-1 fixed top-0 left-0 z-50">
+  </div>
+  <article class="prose prose-indigo prose-invert mx-auto w-full max-w-3xl">
+    <Image
+      transition:name={`${post.id}-image`}
+      src={post.data.heroImage
+        ? `/images/${post.data.heroImage}`
+        : `/${post.id}/og.png`}
+      class="rounded-xl object-cover"
+      width={1020}
+      height={510}
+      alt={`${post.id}-image`}
+    />
+    <hr class="my-4" />
+    <Content />
+  </article>
+</Layout>
+
+<script type="module">
+  window.addEventListener("scroll", function () {
+    const scrollableHeight =
+      document.documentElement.scrollHeight - window.innerHeight;
+    const scrolled = window.scrollY;
+    const progressBar = document.getElementById("scroll-progress");
+    const progress = (scrolled / scrollableHeight) * 100;
+    progressBar.style.width = progress + "%";
+  });
+</script>

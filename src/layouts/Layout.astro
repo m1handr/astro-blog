@@ -1,0 +1,102 @@
+---
+import { ClientRouter } from "astro:transitions";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import { BLOG } from "../config";
+
+export interface Props {
+  title?: string;
+  author?: string;
+  description?: string;
+  ogImage: string;
+  canonicalURL?: string;
+  pubDatetime?: Date;
+}
+
+const {
+  title = BLOG.title,
+  description = BLOG.description,
+  ogImage,
+  canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
+  pubDatetime,
+} = Astro.props;
+
+const socialImageURL = new URL(ogImage, Astro.site).href;
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: `${title}`,
+  image: `${socialImageURL}`,
+  datePublished: `${pubDatetime?.toISOString()}`,
+  author: [
+    {
+      "@type": "Person",
+      name: `${BLOG.author}`,
+      url: `${BLOG.profile}`,
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang="ru" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- General Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <meta name="author" content={BLOG.author} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={socialImageURL} />
+
+    <!-- Article Published/Modified time -->
+    {
+      pubDatetime && (
+        <meta
+          property="article:published_time"
+          content={pubDatetime.toISOString()}
+        />
+      )
+    }
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={socialImageURL} />
+
+    <!-- Google JSON-LD Structured data -->
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(structuredData)}
+    />
+
+    <script
+      defer
+      data-domain="mihandr.dev"
+      src="https://stat.mihandr.dev/js/script.js"></script>
+
+    <meta name="theme-color" content="" />
+
+    <ClientRouter />
+  </head>
+  <body
+    class={`mx-auto flex min-h-screen w-full flex-col gap-10 bg-[#111] p-10 text-white xl:w-[768px] relative`}
+  >
+    <Header />
+    <slot />
+    <Footer />
+  </body>
+</html>

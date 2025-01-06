@@ -1,0 +1,20 @@
+---
+import { Icons } from "../assets/Icons";
+import { SOCIALS } from "../config";
+---
+
+<div class="flex gap-4">
+  {
+    SOCIALS.filter((social) => social.active).map((social) => (
+      <a
+        href={social.href}
+        class="group inline-block hover:text-skin-accent"
+        aria-label={social.title}
+        title={social.title}
+      >
+        <Fragment set:html={Icons[social.icon]} />
+        <span class="sr-only">{social.title}</span>
+      </a>
+    ))
+  }
+</div>

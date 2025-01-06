@@ -1,0 +1,70 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import getReadingTime from "reading-time";
+import Layout from "../layouts/Layout.astro";
+
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+---
+
+<Layout ogImage="avatar.webp">
+  <main>
+    <div
+      class="my-10 flex w-full flex-col items-center justify-center gap-6 sm:flex-row"
+    >
+      <Image
+        transition:name="mihandr"
+        src="/avatar.webp"
+        class="w-[100px] rounded-[35px]"
+        alt="avatar"
+        width={150}
+        height={150}
+      />
+      <h2 class="text-2xl font-semibold sm:text-3xl md:text-5xl">
+        Hi, I’m Mihandr - <br /> A Web Developer
+      </h2>
+    </div>
+    <div class="mt-14 grid gap-6 sm:grid-cols-2">
+      {
+        posts.map((post) => (
+          <a
+            href={post.id}
+            class="rounded-xl border border-transparent transition-all duration-500 hover:border-indigo-500 border-[#222]"
+          >
+            <Image
+              transition:name={`${post.id}-image`}
+              src={`/images/${post.data.heroImage}`}
+              class="mx-auto rounded-xl rounded-b-none w-full"
+              width={352}
+              height={198}
+              alt={`${post.id}-image`}
+            />
+            <div class="p-6">
+              <p
+                transition:name={`${post.id}-data`}
+                class="text-zinc-500 font-medium"
+              >
+                <time datetime={post.data.pubDate.toISOString()}>
+                  {post.data.pubDate.toLocaleDateString("ru-RU", {
+                    year: "numeric",
+                    month: "numeric",
+                    day: "numeric",
+                  })}
+                </time>
+                - {Math.floor(getReadingTime(post.body!).minutes)} мин.
+              </p>
+              <p
+                class="hover:text-bright text-2xl font-bold"
+                transition:name={`${post.id}-text`}
+              >
+                {post.data.title}
+              </p>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </main>
+</Layout>
