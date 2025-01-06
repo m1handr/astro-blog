@@ -1,8 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import { type CollectionEntry, getCollection, render } from "astro:content";
-import Layout from "../layouts/Layout.astro";
-import getReadingTime from "reading-time";
+import Layout from '../../layouts/Layout.astro'
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -23,8 +22,7 @@ const { Content } = await render(post);
   ogImage={post.data.heroImage}
   pubDatetime={post.data.pubDate}
 >
-  <div id="scroll-progress" class="bg-indigo-500 h-1 fixed top-0 left-0 z-50">
-  </div>
+  <div id="scroll-progress" class="bg-indigo-500 h-1 fixed top-0 left-0 z-50" />
   <article class="prose prose-indigo prose-invert mx-auto w-full max-w-3xl">
     <Image
       transition:name={`${post.id}-image`}

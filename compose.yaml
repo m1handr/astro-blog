@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: 'astro-blog'
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: .
+    ports:
+      - 3033:8080
+
+networks:
+  default:
+    driver: bridge

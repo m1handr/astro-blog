@@ -1,10 +1,11 @@
-FROM node:lts AS base
+FROM node:lts AS build
 WORKDIR /app
-COPY package*.json ./
-RUN npm install
+COPY package.json yarn.lock ./
+RUN yarn install
 COPY . .
-RUN npm run build
+RUN yarn build
 
-FROM nginx:mainline-alpine-slim AS runtime
-COPY --from=base ./app/dist /usr/share/nginx/html
-EXPOSE 80
+FROM nginx:alpine AS runtime
+COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /app/dist /usr/share/nginx/html
+EXPOSE 8080
