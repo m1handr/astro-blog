@@ -31,7 +31,7 @@ const posts = (await getCollection("blog")).sort(
         posts.map((post) => (
           <a
             href={post.id}
-            class="rounded-xl border border-transparent transition-all duration-500 hover:border-indigo-500 border-[#222]"
+            class="rounded-xl border transition-all duration-500 hover:border-indigo-500 border-[#222]"
           >
             <Image
               transition:name={`${post.id}-image`}
