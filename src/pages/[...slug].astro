@@ -1,7 +1,8 @@
 ---
 import { Image } from "astro:assets";
 import { type CollectionEntry, getCollection, render } from "astro:content";
-import Layout from "../../layouts/Layout.astro";
+import Layout from "../layouts/Layout.astro";
+import getReadingTime from "reading-time";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -27,14 +28,16 @@ const { Content } = await render(post);
   <article class="prose prose-indigo prose-invert mx-auto w-full max-w-3xl">
     <Image
       transition:name={`${post.id}-image`}
-      src={post.data.heroImage
-        ? `/images/${post.data.heroImage}`
-        : `/${post.id}/og.png`}
+      src=`/images/${post.data.heroImage}`
       class="rounded-xl object-cover"
       width={1020}
       height={510}
       alt={`${post.id}-image`}
     />
+    <h1 class="text-3xl font-bold leading-8 tracking-tight sm:text-4xl">
+      {post.data.title}
+    </h1>
+    <p>{post.data.description}</p>
     <hr class="my-4" />
     <Content />
   </article>
