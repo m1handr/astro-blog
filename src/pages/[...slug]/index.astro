@@ -35,7 +35,7 @@ const { Content } = await render(post);
     <h1 class="text-3xl font-bold leading-8 tracking-tight sm:text-4xl">
       {post.data.title}
     </h1>
-    <p>{post.data.description}</p>
+    {post.data.description && <p>{post.data.description}</p>}
     <hr class="my-4" />
     <Content />
   </article>
